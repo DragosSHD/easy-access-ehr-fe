@@ -1,6 +1,6 @@
 <template>
-  <div class="home-view">
-    <h1>HomeView</h1>
+  <div class="register-view">
+    <h1>RegisterView</h1>
   </div>
 </template>
 
