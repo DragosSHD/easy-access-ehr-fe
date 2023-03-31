@@ -24,7 +24,6 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   const user = getUser();
-  console.log(to.name === 'login');
   if (to.name !== 'login' && to.name !== 'register' && !user) {
     return { name: 'login' }
   }
