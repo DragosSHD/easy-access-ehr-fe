@@ -1,36 +1,34 @@
 <template>
-  <n-space vertical size="medium">
-      <div class="container">
-        <div class="login-view">
-          <h1 style="margin-bottom: 0; text-align: center">{{ appTitle }}</h1>
-          <p style="margin-bottom: 50px; text-align: center">{{ appVersion }}</p>
-          <p>Log in to your account</p>
-          <form ref="formRef" @submit.prevent="handleSubmit">
-            <n-space vertical size="large">
-              <n-input v-model:value="formState.email.value"
-                       placeholder="Email"
-                       :status="formState.email.error"
-                       :disabled="formIsLoading"/>
-              <n-input v-model:value="formState.password.value"
-                       type="password"
-                       placeholder="Password"
-                       :status="formState.password.error"
-                       show-password-on="mousedown"
-                       :disabled="formIsLoading"/>
-              <n-button type="primary" @click="handleSubmit" block>Log in</n-button>
-              <div class="bottom-btn-container">
-                <RouterLink to="/register">
-                  <n-button type="default" block>Forgot password</n-button>
-                </RouterLink>
-                <RouterLink to="/register">
-                  <n-button type="default" block>Register</n-button>
-                </RouterLink>
-              </div>
-            </n-space>
-          </form>
-        </div>
-      </div>
-  </n-space>
+  <div class="container">
+    <div class="login-view">
+      <h1 style="margin-bottom: 0; text-align: center">{{ appTitle }}</h1>
+      <p style="margin-bottom: 50px; text-align: center">{{ appVersion }}</p>
+      <p>Log in to your account</p>
+      <form ref="formRef" @submit.prevent="handleSubmit">
+        <n-space vertical size="large">
+          <n-input v-model:value="formState.email.value"
+                   placeholder="Email"
+                   :status="formState.email.error"
+                   :disabled="formIsLoading"/>
+          <n-input v-model:value="formState.password.value"
+                   type="password"
+                   placeholder="Password"
+                   :status="formState.password.error"
+                   show-password-on="mousedown"
+                   :disabled="formIsLoading"/>
+          <n-button type="primary" @click="handleSubmit" block>Log in</n-button>
+          <div class="bottom-btn-container">
+            <RouterLink to="/register">
+              <n-button type="default" block>Forgot password</n-button>
+            </RouterLink>
+            <RouterLink to="/register">
+              <n-button type="default" block>Register</n-button>
+            </RouterLink>
+          </div>
+        </n-space>
+      </form>
+    </div>
+  </div>
 </template>
 
 <script setup>
