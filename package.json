@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "fhir-kit-client": "^1.9.2",
+    "toastify-js": "^1.12.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },

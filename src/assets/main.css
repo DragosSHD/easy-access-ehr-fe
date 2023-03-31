@@ -18,6 +18,11 @@ p {
     margin: 5px 0;
 }
 
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
 #app {
     height: 100%;
 }
@@ -26,6 +31,13 @@ p {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container > * {
+    flex: 1;
 }
 
 
