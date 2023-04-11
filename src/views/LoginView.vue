@@ -60,7 +60,6 @@ async function handleSubmit() {
   formIsLoading.value = true;
   const user = await login(formState.email.value, formState.password.value);
   if(user) {
-    console.log(user);
     setUser(user);
     await router.push({ name: routeNames.HOME });
   }

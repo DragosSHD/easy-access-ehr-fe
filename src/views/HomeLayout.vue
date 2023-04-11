@@ -23,7 +23,6 @@
         <n-layout-sider
             bordered
             collapse-mode="width"
-            style="padding: 10px 5px"
             :show-collapsed-content="false"
             :width="240"
             :collapsed-width="0"
@@ -66,9 +65,10 @@ import {
   NButton,
 } from "naive-ui";
 import { h, reactive, ref } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import HamburgerButton from "../components/HamburgerButton.vue";
 import routeNames from "../router/routeNames.js";
+import { setUser } from "../util/util.js";
 
 const collapsed = ref(false);
 const menuOptions = reactive([
@@ -142,9 +142,11 @@ const menuOptions = reactive([
   }
 ]);
 const selectedKey = ref("home");
+const router = useRouter();
 
 async function handleLogout() {
-  console.log("logout");
+  setUser(null);
+  await router.push({ name: routeNames.LOGIN });
 }
 
 </script>
