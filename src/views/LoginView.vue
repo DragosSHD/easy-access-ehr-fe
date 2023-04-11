@@ -38,6 +38,7 @@ import { reactive, ref } from "vue";
 import { login } from "../util/api.js";
 import { setUser } from "../util/util.js";
 import { useRouter } from "vue-router";
+import routeNames from "../router/routeNames.js";
 
 const formRef = ref(null);
 const formState = reactive({
@@ -61,7 +62,7 @@ async function handleSubmit() {
   if(user) {
     console.log(user);
     setUser(user);
-    await router.push("/home");
+    await router.push({ name: routeNames.HOME });
   }
   formIsLoading.value = false;
 }

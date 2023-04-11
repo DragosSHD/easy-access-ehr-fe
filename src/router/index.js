@@ -1,22 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { getUser } from "../util/util.js";
+import routeNames from "./routeNames.js";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: routeNames.HOME,
       component: () => import('../views/HomeView.vue'),
     },
     {
       path: '/login',
-      name: 'login',
+      name: routeNames.LOGIN,
       component: () => import('../views/LoginView.vue'),
     },
     {
       path: '/register',
-      name: 'register',
+      name: routeNames.REGISTER,
       component: () => import('../views/RegisterView.vue'),
     },
   ]
@@ -24,11 +25,11 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   const user = getUser();
-  if (to.name !== 'login' && to.name !== 'register' && !user) {
-    return { name: 'login' }
+  if (to.name !== routeNames.LOGIN && to.name !== routeNames.REGISTER && !user) {
+    return { name: routeNames.LOGIN }
   }
-  if ((to.name === 'login' || to.name === 'register') && user) {
-    return { name: 'home' }
+  if ((to.name === routeNames.LOGIN || to.name === routeNames.REGISTER) && user) {
+    return { name: routeNames.HOME }
   }
 
   return true;

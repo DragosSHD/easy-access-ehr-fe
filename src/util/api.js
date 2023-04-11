@@ -41,3 +41,11 @@ export const login = async (email, password) => fetcher(`${apiURL}/auth/login`, 
     },
     body: JSON.stringify({ email, password })
 });
+
+export const register = async (data) => fetcher(`${apiURL}/users`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+});
