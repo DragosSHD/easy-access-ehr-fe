@@ -7,8 +7,19 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: routeNames.HOME,
-      component: () => import('../views/HomeView.vue'),
+      component: () => import('../views/HomeLayout.vue'),
+      children: [
+        {
+          path: '/home',
+          name: routeNames.HOME,
+          component: () => import('../views/client/HomeView.vue'),
+        },
+        {
+          path: '/health-records/:recordType',
+          name: routeNames.HEALTH_RECORDS,
+          component: () => import('../views/client/HealthRecordsView.vue'),
+        },
+      ]
     },
     {
       path: '/login',
@@ -28,7 +39,7 @@ router.beforeEach((to) => {
   if (to.name !== routeNames.LOGIN && to.name !== routeNames.REGISTER && !user) {
     return { name: routeNames.LOGIN }
   }
-  if ((to.name === routeNames.LOGIN || to.name === routeNames.REGISTER) && user) {
+  if ((to.name === routeNames.LOGIN || to.name === routeNames.REGISTER || to.path === '/') && user) {
     return { name: routeNames.HOME }
   }
 
