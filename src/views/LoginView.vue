@@ -15,7 +15,8 @@
                    placeholder="Password"
                    :status="formState.password.error"
                    show-password-on="mousedown"
-                   :disabled="formIsLoading"/>
+                   :disabled="formIsLoading"
+                   @keydown.enter="handleSubmit"/>
           <n-button type="primary" @click="handleSubmit" block>Log in</n-button>
           <div class="bottom-btn-container">
             <RouterLink to="/register">
