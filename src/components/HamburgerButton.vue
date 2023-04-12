@@ -1,7 +1,7 @@
 <template>
   <div class="hamburger-button"
-       :class="{ active: isActive }"
-       @click="isActive = !isActive">
+       :class="{ active: !props.modelValue }"
+       @click="emit('update:modelValue', !props.modelValue)">
     <span></span>
     <span></span>
     <span></span>
@@ -9,17 +9,15 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
-
-const isActive = ref(true);
 const emit = defineEmits({
-  toggleActive: null,
+  'update:modelValue': null
 });
-
-watch(isActive, (value) => {
-  emit("toggleActive", value);
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    default: false
+  }
 });
-
 </script>
 
 <style scoped>

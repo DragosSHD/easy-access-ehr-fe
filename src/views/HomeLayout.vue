@@ -4,7 +4,7 @@
         <n-grid x-gap="12" :cols="3" style="height: 60px" item-responsive responsive="screen">
           <n-gi>
             <div class="header-item">
-              <HamburgerButton @toggleActive="(value) => collapsed = !value" />
+              <HamburgerButton v-model="collapsed"/>
             </div>
           </n-gi>
           <n-gi>
@@ -113,13 +113,13 @@ import {
   NCheckboxGroup,
   NCheckbox,
 } from "naive-ui";
-import { computed, h, reactive, ref } from "vue";
+import { computed, h, onMounted, reactive, ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import HamburgerButton from "../components/HamburgerButton.vue";
 import routeNames from "../router/routeNames.js";
 import { setUser } from "../util/util.js";
 
-const collapsed = ref(false);
+const collapsed = ref(true);
 const menuOptions = reactive([
   {
     label: () => h(RouterLink, {
@@ -208,6 +208,33 @@ const modalStyle = computed(() => {
     width: "70%",
     height: "70vh"
   };
+});
+
+onMounted(() => {
+  const path = router.currentRoute.value.path;
+  if(path === "/") {
+    selectedKey.value = "home";
+  } else if(path.includes("health-records")) {
+    if(path.includes("allergies")) {
+      selectedKey.value = "allergies";
+    } else if(path.includes("conditions")) {
+      selectedKey.value = "conditions";
+    } else if(path.includes("immunizations")) {
+      selectedKey.value = "immunizations";
+    } else if(path.includes("medication")) {
+      selectedKey.value = "medication";
+    } else if(path.includes("medical-tests")) {
+      selectedKey.value = "medical-tests";
+    }
+  } else if(path.includes("administrative")) {
+    selectedKey.value = "administrative";
+  }
+
+  const viewportWidth = window.innerWidth;
+  if(viewportWidth > 768) {
+    collapsed.value = false;
+  }
+
 });
 
 async function handleLogout() {
