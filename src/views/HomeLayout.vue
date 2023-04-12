@@ -13,8 +13,8 @@
             </div>
           </n-gi>
           <n-gi>
-            <div class="header-item">
-
+            <div class="header-item" style="justify-content: end">
+              <n-button @click="modalData.showModal = true">Share EHR</n-button>
             </div>
           </n-gi>
         </n-grid>
@@ -22,7 +22,7 @@
       <n-layout has-sider>
         <n-layout-sider
             bordered
-            collapse-mode="width"
+            collapse-mode="transform"
             :show-collapsed-content="false"
             :width="240"
             :collapsed-width="0"
@@ -37,6 +37,7 @@
                 v-model:value="selectedKey"
                 :collapsed-icon-size="22"
                 :options="menuOptions"
+                style="user-select: none;"
                 accordion
             />
             <div style="display: flex; justify-content: center; width: 100%; padding: 10px 0">
@@ -46,10 +47,55 @@
             </div>
           </n-space>
         </n-layout-sider>
-        <n-layout style="padding: 15px">
+        <n-layout style="padding: 15px; white-space: nowrap">
           <RouterView />
         </n-layout>
       </n-layout>
+      <n-modal v-model:show="modalData.showModal"
+               class="custom-card"
+               preset="card"
+               title="Share Health Records"
+               :bordered="false"
+               :style="modalStyle"
+               size="huge">
+          <p>Select EHR data to share:</p>
+          <n-checkbox-group v-model:value="modalData.healthRecords">
+            <n-grid :y-gap="8" :cols="2">
+              <n-gi>
+                <n-checkbox size="large"
+                            value="allergies"
+                            label="Allergies"/>
+              </n-gi>
+              <n-gi>
+                <n-checkbox size="large"
+                            value="conditions"
+                            label="Conditions"/>
+              </n-gi>
+              <n-gi>
+                <n-checkbox size="large"
+                            value="immunizations"
+                            label="Immunizations"/>
+              </n-gi>
+              <n-gi>
+                <n-checkbox size="large"
+                            value="medication"
+                            label="Medication"/>
+              </n-gi>
+              <n-gi>
+                <n-checkbox size="large"
+                            value="medical-tests"
+                            label="Medical Tests"/>
+              </n-gi>
+            </n-grid>
+          </n-checkbox-group>
+          <template #footer>
+            <div style="display: flex; width: 100%; justify-content: center">
+              <n-button type="primary" :disabled="!modalData.healthRecords.length">
+                Generate QR Code
+              </n-button>
+            </div>
+          </template>
+      </n-modal>
     </div>
 </template>
 
@@ -63,8 +109,11 @@ import {
   NLayoutHeader,
   NSpace,
   NButton,
+  NModal,
+  NCheckboxGroup,
+  NCheckbox,
 } from "naive-ui";
-import { h, reactive, ref } from "vue";
+import { computed, h, reactive, ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import HamburgerButton from "../components/HamburgerButton.vue";
 import routeNames from "../router/routeNames.js";
@@ -143,6 +192,23 @@ const menuOptions = reactive([
 ]);
 const selectedKey = ref("home");
 const router = useRouter();
+const modalData = reactive({
+  healthRecords: [],
+  showModal: false
+});
+const modalStyle = computed(() => {
+  const viewportWidth = window.innerWidth;
+  if(viewportWidth < 768) {
+    return {
+      width: "100%",
+      height: "70vh"
+    };
+  }
+  return {
+    width: "70%",
+    height: "70vh"
+  };
+});
 
 async function handleLogout() {
   setUser(null);
