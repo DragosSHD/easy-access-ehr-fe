@@ -59,38 +59,25 @@
                :style="modalStyle"
                size="huge">
           <p>Select EHR data to share:</p>
-          <n-checkbox-group v-model:value="modalData.healthRecords">
-            <n-grid :y-gap="8" :cols="2">
-              <n-gi>
+          <n-checkbox-group :style="{ marginBottom: '15px' }" v-model:value="modalData.healthRecords">
+            <n-grid :y-gap="8" cols="1 400:2">
+              <n-gi v-for="ehrCategory in ehrCategories" :key="ehrCategory">
                 <n-checkbox size="large"
-                            value="allergies"
-                            label="Allergies"/>
-              </n-gi>
-              <n-gi>
-                <n-checkbox size="large"
-                            value="conditions"
-                            label="Conditions"/>
-              </n-gi>
-              <n-gi>
-                <n-checkbox size="large"
-                            value="immunizations"
-                            label="Immunizations"/>
-              </n-gi>
-              <n-gi>
-                <n-checkbox size="large"
-                            value="medication"
-                            label="Medication"/>
-              </n-gi>
-              <n-gi>
-                <n-checkbox size="large"
-                            value="medical-tests"
-                            label="Medical Tests"/>
+                            :value="ehrCategory"
+                            :label="ehrCategory"/>
               </n-gi>
             </n-grid>
           </n-checkbox-group>
+          <p>Choose access expiration date:</p>
+        <n-date-picker v-model:value="modalData.expirationDate"
+                       :min-date="modalData.expirationDate"
+                       :is-date-disabled="modalData.minDate"
+                       type="date"/>
           <template #footer>
             <div style="display: flex; width: 100%; justify-content: center">
-              <n-button type="primary" :disabled="!modalData.healthRecords.length">
+              <n-button type="primary"
+                        @click="handleQrGeneration"
+                        :disabled="!modalData.healthRecords.length || !modalData.expirationDate">
                 Generate QR Code
               </n-button>
             </div>
@@ -112,12 +99,14 @@ import {
   NModal,
   NCheckboxGroup,
   NCheckbox,
+  NDatePicker
 } from "naive-ui";
 import { computed, h, onMounted, reactive, ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import HamburgerButton from "../components/HamburgerButton.vue";
 import routeNames from "../router/routeNames.js";
 import { setUser } from "../util/util.js";
+import { ehrCategories } from "../util/constants.js";
 
 const collapsed = ref(true);
 const menuOptions = reactive([
@@ -194,6 +183,10 @@ const selectedKey = ref("home");
 const router = useRouter();
 const modalData = reactive({
   healthRecords: [],
+  expirationDate: null,
+  minDate: (ts) => {
+    return new Date(ts) < new Date();
+  },
   showModal: false
 });
 const modalStyle = computed(() => {
@@ -240,6 +233,10 @@ onMounted(() => {
 async function handleLogout() {
   setUser(null);
   await router.push({ name: routeNames.LOGIN });
+}
+
+function handleQrGeneration() {
+  console.log(modalData.healthRecords)
 }
 
 </script>
