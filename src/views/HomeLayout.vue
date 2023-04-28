@@ -58,22 +58,29 @@
                :bordered="false"
                :style="modalStyle"
                size="huge">
-          <p>Select EHR data to share:</p>
-          <n-checkbox-group :style="{ marginBottom: '15px' }" v-model:value="modalData.healthRecords">
-            <n-grid :y-gap="8" cols="1 400:2">
-              <n-gi v-for="ehrCategory in ehrCategories" :key="ehrCategory">
-                <n-checkbox size="large"
-                            :value="ehrCategory"
-                            :label="ehrCategory"/>
-              </n-gi>
-            </n-grid>
-          </n-checkbox-group>
-          <p>Choose access expiration date:</p>
-        <n-date-picker v-model:value="modalData.expirationDate"
-                       :min-date="modalData.expirationDate"
-                       :is-date-disabled="modalData.minDate"
-                       type="date"/>
-          <template #footer>
+          <template v-if="!modalData.showQrCode">
+            <p>Select EHR data to share:</p>
+            <n-checkbox-group :style="{ marginBottom: '15px' }" v-model:value="modalData.healthRecords">
+              <n-grid :y-gap="8" cols="1 400:2">
+                <n-gi v-for="ehrCategory in ehrCategories" :key="ehrCategory">
+                  <n-checkbox size="large"
+                              :value="ehrCategory"
+                              :label="ehrCategory"/>
+                </n-gi>
+              </n-grid>
+            </n-checkbox-group>
+            <p>Choose access expiration date:</p>
+            <n-date-picker v-model:value="modalData.expirationDate"
+                           :min-date="modalData.expirationDate"
+                           :is-date-disabled="modalData.minDate"
+                           type="date"/>
+          </template>
+          <template v-else>
+            <QrCode :value="modalData.qrCode"
+                    v-if="modalData.qrCode"
+                    style="height: 100%; display: flex; justify-content: center; align-items: center"/>
+          </template>
+          <template #footer v-if="!modalData.showQrCode">
             <div style="display: flex; width: 100%; justify-content: center">
               <n-button type="primary"
                         @click="handleQrGeneration"
@@ -107,6 +114,8 @@ import HamburgerButton from "../components/HamburgerButton.vue";
 import routeNames from "../router/routeNames.js";
 import { setUser } from "../util/util.js";
 import { ehrCategories } from "../util/constants.js";
+import QrCode from "../components/QrCode.vue";
+import { getAuthorizationToken } from "../util/api.js";
 
 const collapsed = ref(true);
 const menuOptions = reactive([
@@ -187,7 +196,9 @@ const modalData = reactive({
   minDate: (ts) => {
     return new Date(ts) < new Date();
   },
-  showModal: false
+  qrCode: "",
+  showModal: false,
+  showQrCode: false
 });
 const modalStyle = computed(() => {
   const viewportWidth = window.innerWidth;
@@ -227,7 +238,6 @@ onMounted(() => {
   if(viewportWidth > 768) {
     collapsed.value = false;
   }
-
 });
 
 async function handleLogout() {
@@ -235,8 +245,15 @@ async function handleLogout() {
   await router.push({ name: routeNames.LOGIN });
 }
 
-function handleQrGeneration() {
-  console.log(modalData.healthRecords)
+async function handleQrGeneration() {
+  const { healthRecords, expirationDate } = modalData;
+  modalData.showQrCode = true;
+  const tokenRes = await getAuthorizationToken({
+    healthRecords,
+    expirationDate,
+    types: ['read']
+  });
+  modalData.qrCode = tokenRes.data;
 }
 
 </script>

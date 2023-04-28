@@ -1,4 +1,5 @@
 import ToastifyEs from "toastify-js/src/toastify-es.js";
+import { getAuthToken } from "./util.js";
 
 const apiURL = 'http://localhost:8080/api/v1';
 
@@ -58,6 +59,15 @@ export const register = async (data) => fetcher(`${apiURL}/users`, {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+});
+
+export const getAuthorizationToken = async (data) => fetcher(`${apiURL}/auth/get-authorization`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getAuthToken()}`
     },
     body: JSON.stringify(data)
 });
