@@ -26,6 +26,18 @@ async function validateResponse(response) {
 
 function handleNetworkError(error) {
     console.error('Network error', error);
+    ToastifyEs({
+        text: "Network error. Please try again later.",
+        duration: 2000,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "center", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+            background: "#E88080FF",
+        },
+        onClick: function(){} // Callback after click
+    }).showToast();
 }
 
 function fetcher(url, options) {
