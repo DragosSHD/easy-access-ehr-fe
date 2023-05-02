@@ -21,7 +21,7 @@ async function validateResponse(response) {
             },
             onClick: function(){} // Callback after click
         }).showToast();
-        return;
+        return {...jsonResponse, error: true};
     }
     return jsonResponse;
 }
@@ -65,6 +65,15 @@ export const register = async (data) => fetcher(`${apiURL}/users`, {
 });
 
 export const getAuthorizationToken = async (data) => fetcher(`${apiURL}/auth/get-authorization`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getAuthToken()}`
+    },
+    body: JSON.stringify(data)
+});
+
+export const grantAuthorization = async (data) => fetcher(`${apiURL}/auth/create-authorization`, {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
