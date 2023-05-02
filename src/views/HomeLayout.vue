@@ -57,6 +57,7 @@
                title="Share Health Records"
                :bordered="false"
                :style="modalStyle"
+               :on-after-leave="handleModalClose"
                size="huge">
           <template v-if="!modalData.showQrCode">
             <p>Select EHR data to share:</p>
@@ -239,6 +240,14 @@ onMounted(() => {
     collapsed.value = false;
   }
 });
+
+async function handleModalClose() {
+  modalData.showModal = false;
+  modalData.showQrCode = false;
+  modalData.healthRecords = [];
+  modalData.expirationDate = null;
+  modalData.qrCode = "";
+}
 
 async function handleLogout() {
   setUser(null);
