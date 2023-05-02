@@ -20,6 +20,11 @@ const router = createRouter({
           name: routeNames.HEALTH_RECORDS,
           component: () => import('../views/client/HealthRecordsView.vue'),
         },
+        {
+          path: '/scan-qr',
+          name: routeNames.SCAN_QR,
+          component: () => import('../views/doctor/ScanQr.vue'),
+        },
       ]
     },
     {
@@ -31,6 +36,10 @@ const router = createRouter({
       path: '/register',
       name: routeNames.REGISTER,
       component: () => import('../views/RegisterView.vue'),
+    },
+    {
+      path: '/:pathMatch(.*)',
+      redirect: { name: routeNames.HOME }
     },
   ]
 });

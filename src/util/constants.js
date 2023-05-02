@@ -7,3 +7,8 @@ export const ehrCategories = [
     'Medication',
     'Medical Tests',
 ];
+export const userRoles = {
+    ADMIN: 'ADMIN',
+    DOCTOR: 'DOCTOR',
+    PATIENT: 'PATIENT',
+}

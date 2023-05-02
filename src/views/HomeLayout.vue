@@ -40,7 +40,14 @@
                 style="user-select: none;"
                 accordion
             />
-            <div style="display: flex; justify-content: center; width: 100%; padding: 10px 0">
+            <div style="
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+              width: 100%;
+              padding: 10px 0
+            "
+            >
               <n-button type="warning" @click="handleLogout" quaternary>
                 Log Out
               </n-button>
@@ -113,8 +120,8 @@ import { computed, h, onMounted, reactive, ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import HamburgerButton from "../components/HamburgerButton.vue";
 import routeNames from "../router/routeNames.js";
-import { setUser } from "../util/util.js";
-import { ehrCategories } from "../util/constants.js";
+import { getUser, setUser } from "../util/util.js";
+import { ehrCategories, userRoles } from "../util/constants.js";
 import QrCode from "../components/QrCode.vue";
 import { getAuthorizationToken } from "../util/api.js";
 
@@ -233,6 +240,19 @@ onMounted(() => {
     }
   } else if(path.includes("administrative")) {
     selectedKey.value = "administrative";
+  }
+
+  const user = getUser();
+  if([userRoles.DOCTOR, userRoles.ADMIN].includes(user.role)) {
+    const administrativeMenu = menuOptions.find(menu => menu.key === "administrative");
+    administrativeMenu.children.push({
+      label: () => h(RouterLink, {
+        to: { name: routeNames.SCAN_QR },
+      }, {
+        default: () => "Scan QR code"
+      }),
+      key: "scan-qr"
+    });
   }
 
   const viewportWidth = window.innerWidth;
