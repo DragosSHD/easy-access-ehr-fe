@@ -8,12 +8,14 @@
         <n-space vertical size="large">
           <n-input v-model:value="formState.email.value"
                    placeholder="Email"
-                   :status="formState.email.error"
+                   :status="formState.email.status"
+                   @focus="() => formState.email.status = ''"
                    :disabled="formIsLoading"/>
           <n-input v-model:value="formState.password.value"
                    type="password"
                    placeholder="Password"
-                   :status="formState.password.error"
+                   :status="formState.password.status"
+                   @focus="() => formState.password.status = ''"
                    show-password-on="mousedown"
                    :disabled="formIsLoading"
                    @keydown.enter="handleSubmit"/>
@@ -37,7 +39,7 @@ import { appTitle, appVersion } from "../util/constants.js";
 import { NSpace, NInput, NButton } from "naive-ui";
 import { reactive, ref } from "vue";
 import { login } from "../util/api.js";
-import { setUser } from "../util/util.js";
+import { setUser, validateEmailAddress } from "../util/util.js";
 import { useRouter } from "vue-router";
 import routeNames from "../router/routeNames.js";
 
@@ -45,12 +47,12 @@ const formRef = ref(null);
 const formState = reactive({
   email: {
     value: "",
-    error: "",
+    status: "",
     errorMessage: "",
   },
   password: {
     value: "",
-    error: "",
+    status: "",
     errorMessage: "",
   },
 });
@@ -59,12 +61,27 @@ const router = useRouter();
 
 async function handleSubmit() {
   formIsLoading.value = true;
-  const user = await login(formState.email.value, formState.password.value);
-  if(user) {
-    setUser(user);
+  await localLogin();
+  formIsLoading.value = false;
+}
+
+async function localLogin() {
+  if (!validateEmailAddress(formState.email.value)) {
+    formState.email.status = "error";
+    return;
+  }
+  if (!formState.password.value) {
+    formState.password.status = "error";
+    return;
+  }
+  const userResponse = await login(formState.email.value, formState.password.value);
+  if(userResponse?.error) {
+    return;
+  }
+  if(userResponse) {
+    setUser(userResponse);
     await router.push({ name: routeNames.HOME });
   }
-  formIsLoading.value = false;
 }
 
 </script>

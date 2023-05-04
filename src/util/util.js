@@ -17,3 +17,9 @@ export const getAuthToken = () => {
     return user.accessToken;
 }
 
+export const validateEmailAddress = (email) => {
+    if (!email) return false;
+    const regex = /\S+@\S+\.\S+/;
+    return regex.test(email);
+}
+
