@@ -35,7 +35,7 @@ async function onDecode (content) {
   showQrComponent.value = false;
   const authorizationRes = await grantAuthorization({authorizationToken});
   if(authorizationRes?.error) {
-    errorMessage.value = authorizationRes.error;
+    errorMessage.value = authorizationRes.message;
     return;
   }
   successMessage.value = "Authorization granted.";

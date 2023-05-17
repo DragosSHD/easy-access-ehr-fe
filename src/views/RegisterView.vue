@@ -145,7 +145,7 @@ async function handleSubmit() {
       password: formValue.password,
     };
     const res = await register(data);
-    if(res) {
+    if (res && !res.error) {
       await router.push({name: routeNames.LOGIN});
       message.success("Registration successful");
     }
