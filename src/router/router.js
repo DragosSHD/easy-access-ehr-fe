@@ -47,6 +47,9 @@ const router = createRouter({
 router.beforeEach((to) => {
   const user = getUser();
   if (to.name !== routeNames.LOGIN && to.name !== routeNames.REGISTER && !user) {
+    if (to.path === '/') {
+      return { name: routeNames.LOGIN };
+    }
     ToastifyEs({
       text: "You need to sign in first.",
       duration: 2000,
@@ -59,13 +62,13 @@ router.beforeEach((to) => {
       },
       onClick: function(){} // Callback after click
     }).showToast();
-    return { name: routeNames.LOGIN }
+    return { name: routeNames.LOGIN };
   }
   if ((to.name === routeNames.LOGIN || to.name === routeNames.REGISTER || to.path === '/') && user) {
-    return { name: routeNames.HOME }
+    return { name: routeNames.HOME };
   }
 
   return true;
 })
 
-export default router
+export default router;
