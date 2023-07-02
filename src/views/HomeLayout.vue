@@ -70,10 +70,10 @@
             <p>Select EHR data to share:</p>
             <n-checkbox-group :style="{ marginBottom: '15px' }" v-model:value="modalData.healthRecords">
               <n-grid :y-gap="8" cols="1 400:2">
-                <n-gi v-for="ehrCategory in ehrCategories" :key="ehrCategory">
+                <n-gi v-for="ehrCategory in Object.keys(ehrCategories)" :key="ehrCategory">
                   <n-checkbox size="large"
-                              :value="ehrCategory"
-                              :label="ehrCategory"/>
+                              :value="ehrCategories[ehrCategory].field"
+                              :label="ehrCategories[ehrCategory].display"/>
                 </n-gi>
               </n-grid>
             </n-checkbox-group>

@@ -20,24 +20,28 @@
 
 <script setup>
 import { QrcodeStream } from 'vue3-qrcode-reader';
-import { useMessage, NAlert, NButton } from 'naive-ui';
+import { useMessage, NAlert, NButton, useLoadingBar } from 'naive-ui';
 import { ref } from "vue";
-import { grantAuthorization } from "../../util/api.js";
+import { grantAuthorization } from "@/util/api.js";
 
 const message = useMessage();
 const showQrComponent = ref(true);
 const errorMessage = ref("");
 const successMessage = ref("");
+const loadingBar = useLoadingBar();
 
 async function onDecode (content) {
   if(!content) return;
   const authorizationToken = content;
   showQrComponent.value = false;
+  loadingBar.start();
   const authorizationRes = await grantAuthorization({authorizationToken});
   if(authorizationRes?.error) {
     errorMessage.value = authorizationRes.message;
+    loadingBar.error();
     return;
   }
+  loadingBar.finish();
   successMessage.value = "Authorization granted.";
 }
 
