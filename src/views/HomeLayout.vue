@@ -184,16 +184,7 @@ const menuOptions = reactive([
   {
     label: "Administrative",
     key: "administrative",
-    children: [
-      {
-        label: () => h(RouterLink, {
-          to: "/",
-        }, {
-          default: () => "Invoices"
-        }),
-        key: "rat"
-      }
-    ]
+    children: []
   }
 ]);
 const selectedKey = ref("home");

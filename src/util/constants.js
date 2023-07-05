@@ -10,23 +10,23 @@ export const appVersion = '1.0.0';
 export const ehrCategories = {
     ALLERGIES: {
         display: 'Allergies',
-        field: 'allergy',
+        field: 'allergies',
     },
     CONDITIONS: {
         display: 'Conditions',
-        field: 'condition',
+        field: 'conditions',
     },
     IMMUNIZATIONS: {
         display: 'Immunizations',
-        field: 'immunization',
+        field: 'immunizations',
     },
     MEDICATION: {
         display: 'Medication',
-        field: 'medication',
+        field: 'medications',
     },
     MEDICAL_TESTS: {
         display: 'MedicalTests',
-        field: 'medicalTest',
+        field: 'medicalTests',
     },
 };
 export const userRoles = {

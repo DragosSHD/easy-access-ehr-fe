@@ -11,7 +11,7 @@ async function validateResponse(response) {
     if (!response.ok) {
         ToastifyEs({
             text: jsonResponse.message,
-            duration: 2000,
+            duration: 6 * 1000,
             close: true,
             gravity: "top", // `top` or `bottom`
             position: "center", // `left`, `center` or `right`
