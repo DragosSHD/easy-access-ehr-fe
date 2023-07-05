@@ -30,7 +30,6 @@ const selectedPatient = computed(() => {
 const ehrDataToDisplay = computed(() => {
   const category = route.path.split('/').pop().toUpperCase();
   const categoryData = selectedPatient.value.ehr[category.toUpperCase()];
-  console.log(categoryData);
   if (categoryData && categoryData.length > 0) {
     return {
       columns: Object.keys(categoryData[0]).map((key) => ({ title: key.toUpperCase(), key, sorter: 'default' })),

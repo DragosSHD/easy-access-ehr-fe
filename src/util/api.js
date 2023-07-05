@@ -89,3 +89,11 @@ export const getApiUser = async () => fetcher(`${apiURL}/users/${getUser().email
         Authorization: `Bearer ${getAuthToken()}`
     }
 });
+
+export const getEhrCategoryData = async (category, patientID) => fetcher(`${apiURL}/${category}/${patientID}`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getAuthToken()}`
+    }
+});
