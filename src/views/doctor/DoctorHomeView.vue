@@ -31,7 +31,7 @@
       <div v-if="!isAuthorized && selectedCategory && !notAuthotizedError">
         Loading...
       </div>
-      <div v-if="notAuthotizedError">
+      <div v-if="notAuthotizedError" class="alert-container">
         <n-alert title="Not authorized" type="error">
           You are not authorized to see EHR under this category.
           Please ask the patient to provide an authorization QR code.
@@ -87,7 +87,6 @@ watch(selectedCategory, async () => {
   notAuthotizedError.value = false;
   isAuthorized.value = false;
   loadingBar.start();
-  console.log(selectedCategory.value);
   const apiResponse = await getEhrCategoryData(selectedCategory.value, selectedPatientID.value);
   if (apiResponse?.error) {
     notAuthotizedError.value = true;
@@ -116,7 +115,7 @@ onMounted(() => {
   max-width: 15rem;
 }
 
-.page-wrapper {
+.alert-container {
   white-space: normal;
 }
 
